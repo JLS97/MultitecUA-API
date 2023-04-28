@@ -7,7 +7,7 @@ import routes from "./presentation/routes/index";
 
 const PORT = process.env.PORT || 8080; 
 
-const MONGO_URL = process.env.MONGO_URL || 'mongodb+srv://jaimelopezsanchz:admin@cluster0.lenymow.mongodb.net/?retryWrites=true&w=majority';
+const MONGO_URL = process.env.MONGO_URL || 'mongodb+srv://user:admin@cluster0.lenymow.mongodb.net/?retryWrites=true&w=majority';
 
 const app: Application = express();
 
