@@ -1,9 +1,9 @@
 import { IEvent } from "../../../domain/entities/IEvent";
 
 export const validateEvent = (eventData: IEvent): boolean => {
-  const { title, city, place, startsAt, finishesAt } = eventData;
+  const { title, city, place, startsAt, finishesAt, host } = eventData;
 
-  if (!title || !city || !place || !startsAt || !finishesAt) {
+  if (!title || !city || !place || !startsAt || !finishesAt || !host) {
     return false;
   }
 

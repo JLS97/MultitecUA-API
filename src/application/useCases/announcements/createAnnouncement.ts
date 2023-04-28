@@ -13,10 +13,6 @@ class CreateAnnouncement {
     }
 
     const announcement = await this.announcementsRepository.save(announcementData);
-
-    // TODO crear un caso de uso para mandar un mail con los datos del anuncio
-    // a los usuarios que esten suscritos al sistema de mailing
-
     return announcement;
   }
 }
