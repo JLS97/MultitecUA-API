@@ -1,6 +1,8 @@
 import User from "../database/mongoose/UserSchema";
 import { IUser } from "../../domain/entities/IUser";
 import { IUsersRepository } from "../../domain/repositories/IUsersRepository";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 export class UsersRepository implements IUsersRepository {
   async save(user: IUser): Promise<IUser> {
@@ -22,4 +24,21 @@ export class UsersRepository implements IUsersRepository {
     const user = await User.findById(id).lean();
     return user ? user : null;
   }
+
+  async hashPassword(password: string): Promise<string> {
+    const salt = bcrypt.genSaltSync(10);
+    const hashedPassword = bcrypt.hashSync(password, salt);
+    return hashedPassword;
+  }
+
+  async checkPassword(password: string, hashedPassword: string): Promise<boolean> {
+    const isPasswordValid = bcrypt.compareSync(password, hashedPassword);
+    return isPasswordValid;
+  }
+
+  generateJWT(user: IUser): string {
+    const token = jwt.sign({email: user.email}, 'MT-SECRET', { expiresIn: '24h' });
+    return token;
+  }
+
 }

@@ -4,7 +4,7 @@ import { eventsUseCases } from "../../application/useCases/events";
 
 const createEvent = async (req: Request, res: Response) => {
   try {
-    const event = await eventsUseCases.createEvent.execute(req.body);
+    const event = await eventsUseCases.createEvent.execute(req.body.data, req.body.user);
     return res.status(201).json(event);
   } catch (error) {
     if (error instanceof HttpError) {
