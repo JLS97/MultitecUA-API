@@ -8,7 +8,7 @@ export class RegisterUser {
   constructor(private usersRepository: IUsersRepository, private newsletterRepository: INewsletterRepository) {}
 
   async execute(userData: IUser): Promise<IUser> {
-    const { phoneNumber, email } = userData;
+    const { phoneNumber, email, password } = userData;
 
     if (!validateUser(userData)) {
       throw new HttpError(400, "Missing parameters: name, phoneNumber, email or password");
@@ -26,7 +26,14 @@ export class RegisterUser {
       throw new HttpError(409, `User with phone number ${phoneNumber} already exists`);
     }
 
-    const user = await this.usersRepository.save(userData);
+    const hashedPassword = await this.usersRepository.hashPassword(password);
+
+    const userToSave = {
+      ...userData,
+      password: hashedPassword,
+    };
+
+    const user = await this.usersRepository.save(userToSave);
 
     // añadimos al usuario a la lista para recibir newsletters y emails
     await this.newsletterRepository.save(user.email);

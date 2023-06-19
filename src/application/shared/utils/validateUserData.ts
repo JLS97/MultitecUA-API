@@ -12,3 +12,24 @@ export const validateUser = (userData: IUser): boolean => {
   return true;
 };
 
+export const validateLoginUser = (userData: IUser): boolean => {
+  const { email, password } = userData;
+
+  if (!email || !password) {
+    return false;
+  }
+
+  return true;
+}
+
+export const validateAuthenticateUser = (userData: IUser): boolean => {
+  const { email, password } = userData;
+
+  if (!email || !password) {
+    return false;
+  }
+
+  return true;
+}
+
+

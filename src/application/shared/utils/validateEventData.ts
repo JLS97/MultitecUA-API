@@ -1,9 +1,9 @@
-import { IEvent } from "../../../domain/entities/IEvent";
+import { IEventRequestData } from "../../useCases/events/createEvent";
 
-export const validateEvent = (eventData: IEvent): boolean => {
-  const { title, city, place, startsAt, finishesAt, host } = eventData;
+export const validateEvent = (eventData: IEventRequestData): boolean => {
+  const { title, city, place, startsAt, finishesAt } = eventData;
 
-  if (!title || !city || !place || !startsAt || !finishesAt || !host) {
+  if (!title || !city || !place || !startsAt || !finishesAt) {
     return false;
   }
 
