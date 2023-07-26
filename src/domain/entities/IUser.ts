@@ -5,6 +5,6 @@ export interface IUser {
   password: string;
   phoneNumber: string;
   telegramName?: string;
-  isActiveMember: boolean;
+  rol: "simpatizante" | "miembro" | "directivo";
   createdAt: Date;
 }

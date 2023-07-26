@@ -3,6 +3,7 @@ import { verify } from "jsonwebtoken";
 
 type DecodedTokenType = {
     email: string,
+    rol: string,
     iat: number,
     exp: number,
 }
@@ -15,11 +16,16 @@ export const requireAccessToken = (req: Request, res: Response, next: NextFuncti
     }
     
     try {
+        const { user } = req.body;
+
         const decoded = verify(authHeader, "MT-SECRET") as DecodedTokenType;
-    
-        req.body.user = decoded.email;
-    
-        return next();
+        
+        if(decoded.rol === "directivo") {
+            return next();
+        } else if(user === decoded.email) {
+            return next();
+        }
+        return res.status(401).json({ message: "Invalid JWT token" });
     } catch (error) {
         return res.status(401).json({ message: "Invalid JWT token" });
     }

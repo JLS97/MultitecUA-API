@@ -7,4 +7,7 @@ export interface IUsersRepository {
   hashPassword(password: string): Promise<string>;
   checkPassword(password: string, hashedPassword: string): Promise<boolean>;
   generateJWT(user: IUser): string;
+  updateUserData(user: IUser): Promise<IUser | null>;
+  deleteUserData(email: string): Promise<IUser | null>;
+  getAllUsers(): Promise<IUser[] | null>;
 }
