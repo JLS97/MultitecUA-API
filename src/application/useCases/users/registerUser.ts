@@ -8,7 +8,7 @@ export class RegisterUser {
   constructor(private usersRepository: IUsersRepository, private newsletterRepository: INewsletterRepository) {}
 
   async execute(userData: IUser): Promise<IUser> {
-    const { phoneNumber, email, password } = userData;
+    const { email, password } = userData;
 
     if (!validateUser(userData)) {
       throw new HttpError(400, "Missing parameters: name, phoneNumber, email or password");
@@ -19,17 +19,18 @@ export class RegisterUser {
     if (userWithSameEmail) {
       throw new HttpError(409, `User with email ${email} already exists`);
     }
-
+     /*
     const userWithSamePhoneNumber = await this.usersRepository.findByPhoneNumber(phoneNumber);
 
     if (userWithSamePhoneNumber) {
       throw new HttpError(409, `User with phone number ${phoneNumber} already exists`);
-    }
+    }*/
 
     const hashedPassword = await this.usersRepository.hashPassword(password);
 
     const userToSave = {
       ...userData,
+      phoneNumber: '33337775678312',
       password: hashedPassword,
     };
 
@@ -38,6 +39,12 @@ export class RegisterUser {
     // añadimos al usuario a la lista para recibir newsletters y emails
     await this.newsletterRepository.save(user.email);
 
-    return user;
+    //const jwt = this.usersRepository.generateJWT(userData);
+
+    const response = {
+      ...user,
+    }
+
+    return response;
   }
 }

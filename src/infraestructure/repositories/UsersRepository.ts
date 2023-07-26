@@ -37,8 +37,23 @@ export class UsersRepository implements IUsersRepository {
   }
 
   generateJWT(user: IUser): string {
-    const token = jwt.sign({email: user.email}, 'MT-SECRET', { expiresIn: '24h' });
+    const token = jwt.sign({email: user.email, rol: user.rol}, 'MT-SECRET', { expiresIn: '24h' });
     return token;
+  }
+
+  async updateUserData(userData: IUser): Promise<IUser | null> {
+    const user = await User.findOneAndUpdate({ email: userData.email }, userData, { new: true }).lean();
+    return user ? user : null;
+  }
+
+  async deleteUserData(email: string): Promise<IUser | null> {
+    const deletedUser = await User.findOneAndDelete({ email }).lean();
+    return deletedUser ? deletedUser : null;
+  }
+
+  async getAllUsers(): Promise<IUser[] | null> {
+    const users = await User.find().lean();
+    return users ? users : null;
   }
 
 }

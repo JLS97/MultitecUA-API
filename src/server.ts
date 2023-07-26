@@ -15,7 +15,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json());
 app.use(cors());
 
-app.use('/v1', routes);
+app.use('/api', routes);
 
 const server = http.createServer(app);
 
