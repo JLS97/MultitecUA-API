@@ -1,9 +1,9 @@
 import { IUser } from "../../../domain/entities/IUser";
 
 export const validateUser = (userData: IUser): boolean => {
-  const { name, phoneNumber, email, password } = userData;
+  const { name, email, password } = userData;
 
-  if (!name || !phoneNumber || !email || !password) {
+  if (!name || !email || !password) {
     return false;
   }
 

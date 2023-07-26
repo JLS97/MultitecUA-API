@@ -4,10 +4,10 @@ import { IUser } from '../../../domain/entities/IUser';
 const UserSchema = new Schema<IUser>({
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
-  phoneNumber: { type: String, required: true, unique: true },
+  phoneNumber: { type: String },
   password: { type: String, required: true },
-  isActiveMember: { type: Boolean, required: true, default: false},
   telegramName: { type: String, required: false},
+  rol: { type: String, required: true, default: 'miembro'},
   createdAt: { type: Date, default: Date.now }
 });
 
