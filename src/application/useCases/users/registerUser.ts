@@ -15,8 +15,9 @@ export class RegisterUser {
 
     const hashedPassword = await this.usersRepository.hashPassword(password);
 
-    const userToSave = {
+    const userToSave: IUser = {
       ...userData,
+      id: uuidv4(),
       phoneNumber: uuidv4(),
       password: hashedPassword,
     };

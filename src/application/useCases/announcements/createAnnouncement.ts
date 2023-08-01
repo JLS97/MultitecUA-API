@@ -2,6 +2,7 @@ import { IAnnouncement } from "../../../domain/entities/IAnnouncement";
 import { IAnnouncementsRepository } from "../../../domain/repositories/IAnnouncementsRepository";
 import { HttpError } from "../../shared/errors/HttpError";
 import { validateAnnouncement } from "../../shared/utils/validateAnnouncementData";
+import { v4 as uuidv4 } from 'uuid';
 
 export type IAnnouncementRequestData = {
   title: string;
@@ -19,6 +20,7 @@ class CreateAnnouncement {
 
     const announcementToSave: IAnnouncement = {
       ...announcementData,
+      id: uuidv4(),
       announcer: creatorEmail,
       createdAt: new Date(),
       likes: [],
