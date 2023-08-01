@@ -17,6 +17,10 @@ app.use(cors());
 
 app.use('/api', routes);
 
+app.get('/', (_req, res) => {
+  res.status(200).send('Hello World!');
+});
+
 const server = http.createServer(app);
 
 const startServer = async() => {
