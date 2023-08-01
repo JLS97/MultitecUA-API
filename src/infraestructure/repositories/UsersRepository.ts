@@ -8,6 +8,9 @@ import { HttpError } from "../../application/shared/errors/HttpError";
 export class UsersRepository implements IUsersRepository {
   async save(user: IUser): Promise<IUser> {
     const createdUser = await User.create(user);
+    if(!createdUser) {
+      throw new HttpError(400, `Error creating user`);
+    };
     return createdUser.toObject();
   }
 
