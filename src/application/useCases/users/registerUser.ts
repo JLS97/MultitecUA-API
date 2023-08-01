@@ -13,6 +13,12 @@ export class RegisterUser {
       throw new HttpError(400, "Missing parameters: name, phoneNumber, email or password");
     }
 
+    //check if user with email already exists
+    const userWithEmail = await this.usersRepository.findByEmail(userData.email);
+    if(userWithEmail) {
+      throw new HttpError(400, "User with this email already exists");
+    }
+
     const hashedPassword = await this.usersRepository.hashPassword(password);
 
     const userToSave: IUser = {
