@@ -1,19 +1,18 @@
 import { Request, Response } from "express";
-import { usersUseCases } from "../../application/useCases/users";
 import { HttpError } from "../../application/shared/errors/HttpError";
+import { eventsUseCases } from "../../application/useCases/events";
 
-const deleteUser = async (req: Request, res: Response) => {
+const getEvent = async (req: Request, res: Response) => {
   try {
-    await usersUseCases.deleteUser.execute(req.params.id);
-    return res.status(200).json();
+    const event = await eventsUseCases.getEvent.execute(req.params.id);
+    return res.status(201).json(event);
   } catch (error) {
     if (error instanceof HttpError) {
       return res.status(error.status).json({ message: error.message });
     } else {
-      console.log(error)
       return res.status(500).json({ message: 'Internal server error' });
     }
   }
 };
 
-export default deleteUser;
+export default getEvent;

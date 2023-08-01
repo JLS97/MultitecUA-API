@@ -1,7 +1,7 @@
-import { IEvent } from "../../../domain/entities/IEvent";
+import { IEvent } from "../../../domain/entities/Events/IEvent";
 import { IEventsRepository } from "../../../domain/repositories/IEventsRepository";
 import { HttpError } from "../../shared/errors/HttpError";
-//import mailingSystem from "../../shared/utils/MailingSystem";
+import { v4 as uuidv4 } from 'uuid';
 import { validateEvent } from "../../shared/utils/validateEventData";
 
 export type IEventRequestData = {
@@ -22,13 +22,19 @@ export class CreateEvent {
       throw new HttpError(400, "Missing parameters: host, title, city, place, startsAt or finishesAt");
     }
 
+    // crear el evento para guardar con el id generado por mongo
+
     const eventToSave: IEvent = {
-      ...eventData,
+      id: this.generateRandomId(),
+      title: eventData.title,
+      description: eventData.description,
+      city: eventData.city,
+      place: eventData.place,
+      startsAt: eventData.startsAt,
       host: creatorEmail,
-      createdAt: new Date(),
       assistants: [],
-      likes: [],
-    }
+      createdAt: new Date(),
+    };
 
     const event = await this.eventsRepository.save(eventToSave);
 
@@ -42,4 +48,9 @@ export class CreateEvent {
 
     return event;
   }
+
+  private generateRandomId(): string {
+    return uuidv4();
+  }
+
 }

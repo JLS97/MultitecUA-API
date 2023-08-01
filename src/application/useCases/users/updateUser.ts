@@ -1,22 +1,22 @@
-import { IUser } from "../../../domain/entities/IUser";
+import { IUpdateUserRequest } from "../../../domain/entities/Users/IUpdateUserRequest";
+import { IUser } from "../../../domain/entities/Users/IUser";
 import { IUsersRepository } from "../../../domain/repositories/IUsersRepository";
-import { HttpError } from "../../shared/errors/HttpError";
 
 export class UpdateUser {
   constructor(private usersRepository: IUsersRepository) {}
 
-  async execute(userData: IUser): Promise<IUser> {
-    
-    const updatedUser = await this.usersRepository.updateUserData(userData);
+  async execute(userData: IUpdateUserRequest): Promise<IUser> {
+      const userToUpdate = await this.usersRepository.findById(userData.id);
 
-    if (!updatedUser) {
-      throw new HttpError(404, `User with email ${userData.email} not found`);
-    }
-
-    const response = {
-        ...updatedUser,
-    }
-
-    return response;
+      return await this.usersRepository.updateUserData({
+        id: userToUpdate.id,
+        name: userData.name ?? userToUpdate.name,
+        email: userData.email ?? userToUpdate.email,
+        password: userToUpdate.password,
+        rol: userData.rol ?? userToUpdate.rol,
+        telegramName: userData.telegramName ?? userToUpdate.telegramName,
+        phoneNumber: userToUpdate.phoneNumber,
+        createdAt: userToUpdate.createdAt,
+      });
   }
 }

@@ -1,4 +1,5 @@
 export interface IEvent {
+  id: string,
   title: string,
   description?: string,
   host: string,
@@ -6,7 +7,5 @@ export interface IEvent {
   place: string,
   createdAt: Date,
   startsAt: Date,
-  finishesAt: Date,
   assistants: Array<string>,
-  likes: Array<string>,
 }

@@ -1,4 +1,4 @@
-import { IUser } from "../../../domain/entities/IUser";
+import { IUser } from "../../../domain/entities/Users/IUser";
 
 export const validateUser = (userData: IUser): boolean => {
   const { name, email, password } = userData;

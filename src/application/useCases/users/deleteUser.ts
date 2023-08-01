@@ -1,22 +1,10 @@
-import { IUser } from "../../../domain/entities/IUser";
+import { IUser } from "../../../domain/entities/Users/IUser";
 import { IUsersRepository } from "../../../domain/repositories/IUsersRepository";
-import { HttpError } from "../../shared/errors/HttpError";
 
 export class DeleteUser {
   constructor(private usersRepository: IUsersRepository) {}
 
-  async execute(userData: IUser): Promise<IUser> {
-    
-    const updatedUser = await this.usersRepository.deleteUserData(userData.email);
-
-    if (!updatedUser) {
-      throw new HttpError(404, `User with email ${userData.email} not found`);
-    }
-
-    const response = {
-        ...updatedUser,
-    }
-
-    return response;
+  async execute(userId: string): Promise<IUser> {
+    return await this.usersRepository.deleteUser(userId);
   }
 }

@@ -1,8 +1,9 @@
 import User from "../database/mongoose/UserSchema";
-import { IUser } from "../../domain/entities/IUser";
+import { IUser } from "../../domain/entities/Users/IUser";
 import { IUsersRepository } from "../../domain/repositories/IUsersRepository";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { HttpError } from "../../application/shared/errors/HttpError";
 
 export class UsersRepository implements IUsersRepository {
   async save(user: IUser): Promise<IUser> {
@@ -20,9 +21,12 @@ export class UsersRepository implements IUsersRepository {
     return user ? user : null;
   }
 
-  async findById(id: string): Promise<IUser | null> {
+  async findById(id: string): Promise<IUser> {
     const user = await User.findById(id).lean();
-    return user ? user : null;
+    if(!user) {
+      throw new HttpError(404, `User not found`);
+    };
+    return user;
   }
 
   async hashPassword(password: string): Promise<string> {
@@ -37,23 +41,32 @@ export class UsersRepository implements IUsersRepository {
   }
 
   generateJWT(user: IUser): string {
-    const token = jwt.sign({email: user.email, rol: user.rol}, 'MT-SECRET', { expiresIn: '24h' });
+    const token = jwt.sign({email: user.email, rol: user.rol, userId: user.id}, 'MT-SECRET', { expiresIn: '24h' });
     return token;
   }
 
-  async updateUserData(userData: IUser): Promise<IUser | null> {
+  async updateUserData(userData: IUser): Promise<IUser> {
     const user = await User.findOneAndUpdate({ email: userData.email }, userData, { new: true }).lean();
-    return user ? user : null;
+    if(!user) {
+      throw new HttpError(404, `Error updating user`);
+    };
+    return user;
   }
 
-  async deleteUserData(email: string): Promise<IUser | null> {
-    const deletedUser = await User.findOneAndDelete({ email }).lean();
-    return deletedUser ? deletedUser : null;
+  async deleteUser(id: string): Promise<IUser> {
+    const deletedUser = await User.findByIdAndDelete(id).lean();
+    if(!deletedUser) {
+      throw new HttpError(404, `Error deleting user`);
+    }
+    return deletedUser;
   }
 
-  async getAllUsers(): Promise<IUser[] | null> {
+  async getAllUsers(): Promise<IUser[]> {
     const users = await User.find().lean();
-    return users ? users : null;
+    if(!users) {
+      throw new HttpError(404, `Error getting users`);
+    }
+    return users;
   }
 
 }

@@ -1,11 +1,15 @@
 import { Router } from "express";
 import EventsController from "../../controllers/events";
-import { requireAccessToken } from "../../application/shared/utils/requireAccessToken";
+import { requireAccessToEvents } from "../../application/shared/utils/requireAccesToEvents";
 
 export default (router: Router) => {
-  router.post('/event', requireAccessToken, EventsController.createEvent);
-  router.get('/event/:id', requireAccessToken, EventsController.createEvent);
-  router.delete('/event/:id', requireAccessToken, EventsController.createEvent);
-  router.get('/events?page=:page', requireAccessToken, EventsController.createEvent);
-  router.get('/event/:id/assist', requireAccessToken, EventsController.createEvent);
+  router.post('/event', requireAccessToEvents, EventsController.createEvent);
+  router.get('/event/:id', requireAccessToEvents, EventsController.getEvent);
+  router.put('/event/:id', requireAccessToEvents, EventsController.updateEvent);
+  router.delete('/event/:id', requireAccessToEvents, EventsController.deleteEvent);
+  router.post('/event/:id/assist', requireAccessToEvents, EventsController.assistToEvent);
+
+  /**
+  router.get('/events?page=:page', EventsController.getLastEvents);
+  */
 }

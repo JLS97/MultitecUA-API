@@ -1,15 +1,12 @@
 import { Request, Response } from "express";
-import { usersUseCases } from "../../application/useCases/users";
 import { HttpError } from "../../application/shared/errors/HttpError";
-import { IUpdateUserRequest } from "../../domain/entities/Users/IUpdateUserRequest";
+import { eventsUseCases } from "../../application/useCases/events";
 
-const updateUser = async (req: Request, res: Response) => {
+const deleteEvent = async (req: Request, res: Response) => {
   try {
-    const userToUpdate: IUpdateUserRequest = {
-      id: req.params.id,
-      ...req.body,
-    };
-    await usersUseCases.updateUser.execute(userToUpdate);
+    const rol: string = req.headers.rol as string;
+    const userId: string = req.headers.userId as string;
+    await eventsUseCases.deleteEvent.execute(req.params.id, rol, userId);
     return res.status(200).json();
   } catch (error) {
     if (error instanceof HttpError) {
@@ -21,4 +18,4 @@ const updateUser = async (req: Request, res: Response) => {
   }
 };
 
-export default updateUser;
+export default deleteEvent;

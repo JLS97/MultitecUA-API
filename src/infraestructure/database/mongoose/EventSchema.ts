@@ -1,5 +1,5 @@
 import { Schema, model } from 'mongoose';
-import { IEvent } from '../../../domain/entities/IEvent';
+import { IEvent } from '../../../domain/entities/Events/IEvent';
 
 const EventSchema = new Schema<IEvent>({
   title: { type: String, required: true },
@@ -8,10 +8,8 @@ const EventSchema = new Schema<IEvent>({
   city: { type: String, required: true },
   place: { type: String, required: true, dafault: "Alicante"},
   startsAt: { type: Date, required: false},
-  finishesAt: { type: Date, required: true},
   createdAt: { type: Date, default: Date.now },
   assistants: { type: [String], default: []},
-  likes: { type: [String], default: []},
 });
 
 export default model<IEvent>('Event', EventSchema);

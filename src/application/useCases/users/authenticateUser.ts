@@ -1,4 +1,4 @@
-import { IUser } from "../../../domain/entities/IUser";
+import { IUser } from "../../../domain/entities/Users/IUser";
 import { IUsersRepository } from "../../../domain/repositories/IUsersRepository";
 import { HttpError } from "../../shared/errors/HttpError";
 import { validateAuthenticateUser } from "../../shared/utils/validateUserData";

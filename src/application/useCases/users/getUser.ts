@@ -1,8 +1,8 @@
 import { IUsersRepository } from "../../../domain/repositories/IUsersRepository";
 
-export class GetUsers {
+export class GetUser {
   constructor(private usersRepository: IUsersRepository) {}
 
-  execute = async() =>  await this.usersRepository.getAllUsers();
+  execute = async(id: string) =>  await this.usersRepository.findById(id);
 }
 
