@@ -13,8 +13,8 @@ const notificationsService = getNotificationsService();
 
 const registerUser = new RegisterUser(usersRepository, notificationsService);
 const loginUser = new AuthenticateUser(usersRepository);
-const updateUser = new UpdateUser(usersRepository);
-const deleteUser = new DeleteUser(usersRepository);
+const updateUser = new UpdateUser(usersRepository, notificationsService);
+const deleteUser = new DeleteUser(usersRepository, notificationsService);
 const getUsers = new GetUsers(usersRepository);
 const getUser = new GetUser(usersRepository);
 
