@@ -1,6 +1,6 @@
 # Multitecua API
 
-API for the Multitec UA Student Association Services.
+API para los servicios de la asociacion de estudiantes de MultitecUA
 
 ## Requisitos
 
