@@ -1,10 +1,16 @@
 import { IUser } from "../../../domain/entities/Users/IUser";
+import { UsersNotifications } from "../../../domain/entities/Users/IUsersNotifications";
+import { INotificationsRespository } from "../../../domain/repositories/INotificationsRepository";
 import { IUsersRepository } from "../../../domain/repositories/IUsersRepository";
 import { HttpError } from "../../shared/errors/HttpError";
 import { validateUser } from "../../shared/utils/validateUserData";
 import { v4 as uuidv4 } from 'uuid';
+
 export class RegisterUser {
-  constructor(private usersRepository: IUsersRepository) {}
+  constructor(
+    private usersRepository: IUsersRepository,
+    private notificationService: INotificationsRespository
+    ) {}
 
   async execute(userData: IUser): Promise<IUser> {
     const { password, email } = userData;
@@ -29,6 +35,8 @@ export class RegisterUser {
     };
 
     const user = await this.usersRepository.save(userToSave);
+
+    this.notificationService.emit(UsersNotifications.USER_CREATED, user);
 
     const response = {
       ...user,
