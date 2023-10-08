@@ -1,7 +1,6 @@
 import User from "../database/mongoose/UserSchema";
 import { IUser } from "../../domain/entities/Users/IUser";
 import { IUsersRepository } from "../../domain/repositories/IUsersRepository";
-import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { HttpError } from "../../application/shared/errors/HttpError";
 
@@ -32,14 +31,21 @@ export class UsersRepository implements IUsersRepository {
     return user;
   }
 
-  async hashPassword(password: string): Promise<string> {
-    const salt = bcrypt.genSaltSync(10);
-    const hashedPassword = bcrypt.hashSync(password, salt);
+  async hashPassword(passwordToHash: string): Promise<string> {
+    // const salt = bcrypt.genSaltSync(10);
+    // const hashedPassword = bcrypt.hashSync(password, salt);
+
+    // @ts-ignore
+    const hashedPassword = await Bun.password.hash(passwordToHash);
+
     return hashedPassword;
   }
 
-  async checkPassword(password: string, hashedPassword: string): Promise<boolean> {
-    const isPasswordValid = bcrypt.compareSync(password, hashedPassword);
+  async checkPassword(passwordToCheck: string, hashedPassword: string): Promise<boolean> {
+    // const isPasswordValid = bcrypt.compareSync(password, hashedPassword);
+    
+    // @ts-ignore
+    const isPasswordValid = Bun.password.verify(passwordToCheck, hashedPassword);
     return isPasswordValid;
   }
 
