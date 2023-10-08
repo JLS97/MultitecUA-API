@@ -7,14 +7,14 @@ export class RegisterUser {
   constructor(private usersRepository: IUsersRepository) {}
 
   async execute(userData: IUser): Promise<IUser> {
-    const { password } = userData;
+    const { password, email } = userData;
 
     if (!validateUser(userData)) {
       throw new HttpError(400, "Missing parameters: name, phoneNumber, email or password");
     }
 
     //check if user with email already exists
-    const userWithEmail = await this.usersRepository.findByEmail(userData.email);
+    const userWithEmail = await this.usersRepository.findByEmail(email);
     if(userWithEmail) {
       throw new HttpError(400, "User with this email already exists");
     }
@@ -23,8 +23,8 @@ export class RegisterUser {
 
     const userToSave: IUser = {
       ...userData,
-      id: uuidv4(),
       phoneNumber: uuidv4(),
+      rol: 'miembro',
       password: hashedPassword,
     };
 

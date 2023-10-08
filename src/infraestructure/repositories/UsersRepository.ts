@@ -1,8 +1,8 @@
 import User from "../database/mongoose/UserSchema";
 import { IUser } from "../../domain/entities/Users/IUser";
 import { IUsersRepository } from "../../domain/repositories/IUsersRepository";
-import jwt from "jsonwebtoken";
 import { HttpError } from "../../application/shared/errors/HttpError";
+import * as jose from 'jose';
 
 export class UsersRepository implements IUsersRepository {
   async save(user: IUser): Promise<IUser> {
@@ -49,8 +49,17 @@ export class UsersRepository implements IUsersRepository {
     return isPasswordValid;
   }
 
-  generateJWT(user: IUser): string {
-    const token = jwt.sign({email: user.email, rol: user.rol, userId: user.id}, 'MT-SECRET', { expiresIn: '24h' });
+  async generateJWT(user: IUser): Promise<string> {
+    // jswonwebtoken implementation
+    // const token = jwt.sign({email: user.email, rol: user.rol, userId: user.id}, 'MT-SECRET', { expiresIn: '24h' });
+
+    const jwtSecret = new TextEncoder().encode(process.env.JWT_SECRET);
+    const alg = 'HS256';
+    const token = await new jose.SignJWT({email: user.email, rol: user.rol, userId: user.id})
+      .setProtectedHeader({ alg })
+      .setExpirationTime('24h')
+      .sign(jwtSecret);
+
     return token;
   }
 
