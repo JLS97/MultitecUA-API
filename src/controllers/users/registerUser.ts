@@ -4,8 +4,8 @@ import { HttpError } from "../../application/shared/errors/HttpError";
 
 const registerUser = async (req: Request, res: Response) => {
   try {
-    await usersUseCases.registerUser.execute(req.body);
-    return res.status(201).json();
+    const newUser = await usersUseCases.registerUser.execute(req.body);
+    return res.status(201).json(newUser);
   } catch (error) {
     if (error instanceof HttpError) {
       return res.status(error.status).json({ message: error.message });

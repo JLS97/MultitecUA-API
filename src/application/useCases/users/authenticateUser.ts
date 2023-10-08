@@ -1,17 +1,11 @@
 import { IUser } from "../../../domain/entities/Users/IUser";
 import { IUsersRepository } from "../../../domain/repositories/IUsersRepository";
 import { HttpError } from "../../shared/errors/HttpError";
-import { validateAuthenticateUser } from "../../shared/utils/validateUserData";
 
 export class AuthenticateUser {
   constructor(private usersRepository: IUsersRepository) {}
 
-  async execute(userData: IUser): Promise<IUser> {
-    const { email, password } = userData;
-
-    if (!validateAuthenticateUser(userData)) {
-      throw new HttpError(400, "Missing parameters");
-    }
+  async execute(email:string, password:string): Promise<IUser> {
 
     const user = await this.usersRepository.findByEmail(email);
 
@@ -26,7 +20,7 @@ export class AuthenticateUser {
       throw new HttpError(401, "Invalid password");
     }
 
-    const jwtToken = this.usersRepository.generateJWT(user);
+    const jwtToken = await this.usersRepository.generateJWT(user);
 
     const userWithToken = {
         ...user,

@@ -4,7 +4,8 @@ import { HttpError } from "../../application/shared/errors/HttpError";
 
 const registerUser = async (req: Request, res: Response) => {
   try {
-    const user = await usersUseCases.loginUser.execute(req.body);
+    if(!req.body.email || !req.body.password) throw new HttpError(400, "Missing parameters");
+    const user = await usersUseCases.loginUser.execute(req.body.email, req.body.password);
     return res.status(201).json(user);
   } catch (error) {
     if (error instanceof HttpError) {

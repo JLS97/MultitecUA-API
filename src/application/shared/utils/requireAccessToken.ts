@@ -1,15 +1,18 @@
 import { NextFunction, Request, Response } from "express";
-import { verify } from "jsonwebtoken";
+import * as jose from "jose";
 
 type DecodedTokenType = {
-    email: string,
-    rol: string,
-    userId: string,
-    iat: number,
-    exp: number,
+    payload: {
+        email: string,
+        rol: string,
+        exp: number
+    },
+    protectedHeader: {
+        alg: string
+    }
 }
 
-export const requireAccessToken = (req: Request, res: Response, next: NextFunction) => {
+export const requireAccessToken = async (req: Request, res: Response, next: NextFunction) => {
     const authHeader = req.headers.authorization;
     
     if (!authHeader) {
@@ -17,11 +20,13 @@ export const requireAccessToken = (req: Request, res: Response, next: NextFuncti
     }
     
     try {
-        const decoded = verify(authHeader, "MT-SECRET") as DecodedTokenType;
 
-        req.headers.user = decoded.email;
-        req.headers.userId = decoded.userId;
-        req.headers.rol = decoded.rol;
+        const secret = new TextEncoder().encode(process.env.JWT_SECRET);
+
+        const { payload } = await jose.jwtVerify(authHeader, secret) as DecodedTokenType;
+
+        req.headers.user = payload.email;
+        req.headers.rol = payload.rol;
         
         return next();
     } catch (error) {
