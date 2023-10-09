@@ -4,7 +4,7 @@ import { NotificationsService } from '../../domain/notifications/NotificationsSe
 import { notificationsErrorHandler } from '../../domain/notifications/notificationsErrorHandler';
 import { INotificationsRespository } from '../../domain/repositories/INotificationsRepository';
 
-interface BunNotificationServiceParams {
+interface NotificationServiceParams {
   loggerService?: LoggerService;
 }
 
@@ -12,7 +12,7 @@ export class NotificationRepository extends NotificationsService implements INot
   private _NotificationEmitter: NotificationEmitter;
   private _logger?: LoggerService;
 
-  constructor(params?: BunNotificationServiceParams) {
+  constructor(params?: NotificationServiceParams) {
     super();
     this._logger = params?.loggerService;
 
