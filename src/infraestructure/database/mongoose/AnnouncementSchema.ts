@@ -1,5 +1,5 @@
 import { Schema, model } from 'mongoose';
-import { IAnnouncement } from '../../../domain/entities/IAnnouncement';
+import { IAnnouncement } from '../../../domain/entities/Announcements/IAnnouncement';
 
 const AnnouncementSchema = new Schema<IAnnouncement>({
   title: { type: String, required: true },

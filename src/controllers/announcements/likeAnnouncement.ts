@@ -4,7 +4,10 @@ import { announcementsUseCases } from "../../application/useCases/announcements"
 
 const likeAnnouncement = async (req: Request, res: Response) => {
   try {
-    const announcement = await announcementsUseCases.likeAnnouncement.execute(req.body.data, req.body.user);
+    const announcement = await announcementsUseCases.likeAnnouncement.execute({
+      announcementId: req.body.data, 
+      likedBy: req.headers.user as string
+    });
     return res.status(201).json(announcement);
   } catch (error) {
     if (error instanceof HttpError) {

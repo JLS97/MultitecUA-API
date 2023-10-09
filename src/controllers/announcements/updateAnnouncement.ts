@@ -4,7 +4,7 @@ import { announcementsUseCases } from "../../application/useCases/announcements"
 
 const updateAnnouncement = async (req: Request, res: Response) => {
   try {
-    const announcement = await announcementsUseCases.updateAnnouncement.execute(req.body.data, req.body.user);
+    const announcement = await announcementsUseCases.updateAnnouncement.execute(req.body.data);
     return res.status(201).json(announcement);
   } catch (error) {
     if (error instanceof HttpError) {
