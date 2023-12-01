@@ -4,8 +4,8 @@ import { announcementsUseCases } from "../../application/useCases/announcements"
 
 const deleteAnnouncement = async (req: Request, res: Response) => {
   try {
-    const announcement = await announcementsUseCases.deleteAnnouncement.execute(req.body.data, req.body.user);
-    return res.status(201).json(announcement);
+    await announcementsUseCases.deleteAnnouncement.execute(req.body.data);
+    return res.status(201).json();
   } catch (error) {
     if (error instanceof HttpError) {
       return res.status(error.status).json({ message: error.message });

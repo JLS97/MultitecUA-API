@@ -4,6 +4,7 @@ import express, { Application } from "express";
 import mongoose from 'mongoose';
 import http from 'http';
 import routes from "./presentation/routes/index";
+import { registerApplicationNotifications } from "./presentation/notifications/registerApplicationNotifications";
 
 const PORT = process.env.PORT ?? 8080; 
 
@@ -26,6 +27,7 @@ const server = http.createServer(app);
 const startServer = async() => {
   try {
     await mongoose.connect(MONGO_URL);
+    registerApplicationNotifications();
     server.listen(PORT, () => {
       console.log(`Server running on port ${PORT}`);
     });
